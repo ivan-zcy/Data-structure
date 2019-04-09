@@ -28,10 +28,28 @@ Vector *init(int n) {
     return p;
 }
 
+//对顺序表进行扩容操作
+int expand(Vector *v) {
+    v -> data = (int *)realloc(v -> data, sizeof(int) * v -> size * 2);
+    
+    //扩容失败
+    if (v -> data == NULL) {
+        return -1;
+    }
+
+    //维护顺序表的大小
+    v -> size *= 2;
+
+    return 0;
+}
+
 //插入
 int insert(Vector *v, int inx, int val) {
-    if (v -> length >= v -> size) 
-        return -1;
+    if (v -> length >= v -> size) {
+        if (expand(v) == -1) {
+            return -1;
+        }
+    }
     if (inx < 0 || inx > v -> length) 
         return -1;
     
