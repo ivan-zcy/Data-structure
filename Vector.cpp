@@ -30,14 +30,28 @@ Vector *init(int n) {
 
 //对顺序表进行扩容操作
 int expand(Vector *v) {
-    v -> data = (int *)realloc(v -> data, sizeof(int) * v -> size * 2);
-    
-    //扩容失败
-    if (v -> data == NULL) {
-        return -1;
+   
+    //需要扩大的容量extra_size
+    int extra_size = v -> size;
+    int *p = NULL;
+
+    while(extra_size) {
+        //至于用p的原因，realloc的机制是第一步若能扩容成功返回原来的地址
+        //若第一步失败则malloc新地址
+        //若malloc成功则拷贝原地址内容到新地址，然后释放掉原来的内存地址
+        //若第二步malloc失败，原地址不释放，realloc返回NULL
+        //为了避免内存泄露，所以需要一个中间临时指针p
+        p  = (int *)realloc(v -> data, sizeof(int) * (v -> size + extra_size));
+        if (p) break;
+        extra_size /= 2;
     }
 
+    //若没有扩大容量
+    if (extra_size == 0) 
+        return -1;
+
     //维护顺序表的大小
+    v -> data = p;
     v -> size *= 2;
 
     return 0;
