@@ -7,6 +7,8 @@
 
 //一个字符串只包含()[]{}六种符号，判断字符串是否闭合
 
+//方法：使用一个栈来进行匹配操作
+
 class Solution {
 private:
     stack<char>sta;
