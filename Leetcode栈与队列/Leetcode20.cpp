@@ -47,3 +47,43 @@ public:
         return true;
     }
 };
+
+
+//方法二：利用模拟栈非递归
+class Solution {
+private:
+    char *sta = (char *)malloc(sizeof(char) * 10005);
+    int top = -1;
+public:
+    bool isValid(string s) {
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(' || s[i] == '[' || s[i] == '{') {
+                sta[++top] = s[i];
+            } else {
+                if (top == -1) {
+                    return false;
+                }
+                
+                if (s[i] == ')') {
+                    if (sta[top] != '(') {
+                        return false;
+                    }
+                } else if (s[i] == ']') {
+                    if (sta[top] != '[') {
+                        return false;
+                    }
+                } else {
+                    if (sta[top] != '{') {
+                        return false;
+                    }
+                }
+                top --;
+            }
+        }
+        if (top != -1) {
+            return false;
+        }
+        
+        return true;
+    }
+};
